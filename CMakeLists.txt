@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(mcts-hardware-trials)
+project(mcts_hardware_trials)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -13,7 +13,10 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   tf2_ros
+  cv_bridge
 )
+
+find_package(OpenCV 2 REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -127,8 +130,11 @@ include_directories(
 #   src/${PROJECT_NAME}/mcts-hardware-trials.cpp
 # )
 
-add_executable(quad_odom_transform src/quad_odom_transform.cpp)
-target_link_libraries(quad_odom_transform ${catkin_LIBRARIES})
+add_executable(dji_odom_transform src/dji_odom_transform.cpp)
+target_link_libraries(dji_odom_transform ${catkin_LIBRARIES})
+
+add_executable(goal_spotter src/goal_spotter.cpp)
+target_link_libraries(goal_spotter ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries

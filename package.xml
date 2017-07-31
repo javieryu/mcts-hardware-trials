@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>mcts-hardware-trials</name>
+  <name>mcts_hardware_trials</name>
   <version>0.0.0</version>
   <description>The mcts-hardware-trials package</description>
 
