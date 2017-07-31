@@ -15,30 +15,15 @@ from std_msgs.msg import Int16MultiArray
 class filter_gui:
 
 	def __init__( self ):
-		self.hsv1_pub = rospy.Publisher("kin1_hsv",Int16MultiArray,queue_size=10)
-		# self.hsv2_pub = rospy.Publisher("kin2_hsv",Int16MultiArray,queue_size=10)
-		# self.hsv3_pub = rospy.Publisher("kin2_hsv",Int16MultiArray,queue_size=10)
+		self.hsv1_pub = rospy.Publisher("hsv_code",Int16MultiArray,queue_size=10)
 		
 		self.bridge = CvBridge()
 		
-		self.img1_sub = rospy.Subscriber("/camera/rgb/image_rect_color", Image, self.callback)
-		self.img2_sub = rospy.Subscriber("/camera2",Image,self.callback)
-		self.img3_sub = rospy.Subscriber("/camera3",Image,self.callback)	
-		#self.gui = cv2.namedWindow('gui')
-		#cv2.namedWindow("actual")
-		#cv2.namedWindow("filtered")
-
-		#cv2.createTrackbar('h_high','gui',0,179,self.nothing)
-		#cv2.createTrackbar("h_low","gui",0,179,self.nothing)
-		#cv2.createTrackbar("s_high","gui",0,255,self.nothing)
-		#cv2.createTrackbar("s_low","gui",0,255,self.nothing)
-		#cv2.createTrackbar("v_high","gui",0,255,self.nothing)
-		#cv2.createTrackbar("v_low","gui",0,255,self.nothing)
-		
-		#cv2.createTrackbar("kinect","gui",1,3,self.nothing)
+		self.img1_sub = rospy.Subscriber("/zed/rgb/image_rect_color", Image, self.callback)
 		self.hsv1 = [0,179,0,255,0,255,1]
 
-	def nothing(i,j):	
+	def nothing(i,j):
+		print("nothing called")	
 		pass
 
 	def callback(self,img_sub):
