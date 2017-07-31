@@ -127,6 +127,9 @@ include_directories(
 #   src/${PROJECT_NAME}/mcts-hardware-trials.cpp
 # )
 
+add_executable(quad_odom_transform src/quad_odom_transform.cpp)
+target_link_libraries(quad_odom_transform ${catkin_LIBRARIES})
+
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure

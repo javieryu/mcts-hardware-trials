@@ -1,0 +1,103 @@
+<launch>
+	<param name="use_sim_time" value="true" />
+	
+	<arg name="rtabviz" value="false" />
+	
+	<include file="$(find mcts-hardware-trials)/launch/transforms.launch" />
+	
+	<node name="quad_odom_transform" pkg="passive_mapping" type="quad_odom_transform" output="screen" />
+		
+	<arg name="test_num" value="5" />
+	<arg name="bag_path" value="/media/nvidia/SSD/passive-mapping/test_$(arg test_num).bag" />
+	<arg name="bag_args" value="--clock" />
+	
+	<node pkg="rosbag" type="play" name="player" output="screen" 
+		args="$(arg bag_args) $(arg bag_path)"/>
+	
+	<arg name="rtabmap" value="true" />
+	<arg name="laser_scan" value="false" />
+	
+	<group if="$(arg rtabmap)" ns="rtabmap">
+		<node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="--delete_db_on_start">
+			
+			<param name="frame_id" type="string" value="quad"/>
+			<param name="odom_frame_id" type="string" value="world"/>
+			
+			<param name="subscribe_depth" type="bool" value="true"/>
+
+			<remap from="rgb/image" to="/zed/rgb/image_rect_color"/>
+			<remap from="depth/image" to="/zed/depth/depth_registered"/>
+			<remap from="rgb/camera_info" to="/zed/depth/camera_info"/>
+
+			<param name="queue_size" type="int" value="30"/>
+
+			<!-- RTAB-Map's parameters -->
+			
+			<param name="approx_sync" type="bool" value="true"/>
+			
+			<param name="RGBD/AngularUpdate" type="string" value="0.01"/>
+			<param name="RGBD/LinearUpdate" type="string" value="0.01"/>
+			<param name="RGBD/OptimizeFromGraphEnd" type="string" value="true"/>
+			<param name="RGBD/LocalImmunizationRatio" type="string" value="0.4" />
+			<param name="RGBD/ProximityBySpace" type="string" value="false"/>
+
+			<param name="Rtabmap/TimeThr" type="string" value="700"/>
+			<param name="Rtabmap/DetectionRate" type="string" value="2" />
+			<param name="Mem/RehearsalSimilarity" type="string" value="0.45"/>
+
+			<param name="Grid/3D" type="string" value="false" />
+			
+			<param name="Grid/DepthMax" type="string" value="15.0" />
+			<param name="Grid/CellSize" type="string" value="0.2" />
+
+			<param name="GridGlobal/Eroded" type="string" value="true" />
+			<param name="Grid/GroundIsObstacle" type="string" value="true" />
+			<param name="Grid/NormalSegmentation" type="string" value="true" />
+			<param name="Grid/MaxGroundAngle" type="string" value="45" />
+			
+
+			<param name="Grid/NoiseFilteringRadius" type="string" value="0.175"/>
+			<param name="Grid/NoiseFilteringMinNeighbors" type="string" value="4"/>
+			<param name="GridGlobal/FullUpdate" type="string" value="true" />
+			
+			<param name="Grid/FootprintHeight" type="string" value="1.0" />
+			<param name="Grid/FootprintLength" type="string" value="1.0" />
+			<param name="Grid/FootprintWidth" type="string" value="1.0" />
+			
+			<param name="Kp/WordsPerImage" type="string" value="-1"/>
+			
+			<!-- For scan mapping -->
+			
+			<param if="$(arg laser_scan)" name="subscribe_scan_cloud" type="bool" value="true"/>
+			<remap if="$(arg laser_scan)" from="scan_cloud" to="/zed/point_cloud/cloud_registered"/>
+
+
+		</node>
+		
+		<node if="$(arg rtabviz)" pkg="rtabmap_ros" type="rtabmapviz" name="rtabmapviz" args="-d $(find rtabmap_ros)/launch/config/rgbd.rviz" output="screen" launch-prefix="">
+      
+			<param name="subscribe_depth"  type="bool" value="true"/>
+
+			<param name="subscribe_stereo"     type="bool"   value="false"/>
+			<param name="subscribe_scan"       type="bool"   value="false"/>
+			<param name="subscribe_scan_cloud" type="bool"   value="false"/>
+			<param name="subscribe_odom_info"  type="bool"   value="false"/>
+			<param name="frame_id"             type="string" value="zed_current_frame"/>
+			<param name="wait_for_transform_duration" type="double"   value="0.2"/>
+			<param name="approx_sync"          type="bool"   value="true"/>
+
+			<remap from="rgb/image" to="/zed/rgb/image_rect_color"/>
+			<remap from="depth/image" to="/zed/depth/depth_registered"/>
+			<remap from="rgb/camera_info" to="/zed/depth/camera_info"/>
+
+
+			<remap from="odom"  to="/dji_sdk/odometry"/>
+		</node>
+		
+	</group>
+	
+	<node unless="$(arg rtabviz)" pkg="rviz" type="rviz" name="rviz" />
+	
+	
+</launch>
+
