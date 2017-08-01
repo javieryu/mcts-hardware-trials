@@ -48,7 +48,7 @@ public:
 		
 		// Find the pixels in the image within range
 		cv::Mat thresh_im;
-		cv::inRange(hsv_im,cv::Scalar(1,100,125),cv::Scalar(20,255,255),thresh_im);
+		cv::inRange(hsv_im,cv::Scalar(0,110,110),cv::Scalar(20,255,255),thresh_im);
 		
 		
 		vector<vector<cv::Point> > contours;
