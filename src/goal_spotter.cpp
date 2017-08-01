@@ -18,11 +18,11 @@ public:
 	GoalSpotterNode() {
 		ros::NodeHandle nh;
 		image_sub_ = nh.subscribe("zed/rgb/image_rect_color", 1000, &GoalSpotterNode::imageCB,this);
-		flag_pub_ = nh.advertise<std_msgs::Bool>("goal_spotter_node",1000);
+		flag_pub_ = nh.advertise<std_msgs::Bool>("goal_flag",1000);
 		
 	}
 
-	void imageCB(const sensor_msgs::Image::ConstPtr& msg){
+	void imageCB(const sensor_msgs::ImageConstPtr& msg){
 		
 		std_msgs::Bool flag;
 		flag.data = false;
@@ -47,13 +47,15 @@ public:
 		cv::cvtColor(blur_im, hsv_im, cv::COLOR_BGR2HSV);
 		
 		// Find the pixels in the image within range
+		// Use filter_gui.py to determine the correct HSV color ranges
+		// TODO: Need two inRange?? Red color wrap around in HSV spectrum
 		cv::Mat thresh_im;
-		cv::inRange(hsv_im,cv::Scalar(0,110,110),cv::Scalar(20,255,255),thresh_im);
+		cv::inRange(hsv_im,cv::Scalar(0,190,210),cv::Scalar(20,255,255),thresh_im);
 		
 		
 		vector<vector<cv::Point> > contours;
 		vector<cv::Vec4i> hierarchy;
-		cv::findContours(thresh_im, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
+		cv::findContours(thresh_im.clone(), contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
 
 
 		
@@ -71,14 +73,19 @@ public:
 					}	
 			}
 			
-			if (largest_area > 10.0) {
+			// For tuning
+			//~ ROS_INFO("Largest Contour Area: %f", largest_area);
+			
+			if (largest_area > 250.0) {
 				flag.data = true;
 			}
 		}
 		
-		
-		
 		flag_pub_.publish(flag);
+		// DEBUG code
+		//~ cv::imshow("thresholded",thresh_im);
+		//~ cv::imshow("rgb", blur_im);
+		//~ cv::waitKey(1);
 	}
 	
 	
