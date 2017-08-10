@@ -61,24 +61,20 @@ public:
 		
 		if (contours.size() > 0) {
 		
-			double largest_area = 0;
-			int largest_contour_index = -1;
-		
 			for ( int i = 0; i < contours.size(); i++){
 					double a = cv::contourArea(contours[i]);
 					
-					if (a > largest_area){
-						largest_area = a;
-						largest_contour_index = i;
+					if (a > 250.0){
+						flag.data = true;
 					}	
 			}
 			
 			// For tuning
 			//~ ROS_INFO("Largest Contour Area: %f", largest_area);
 			
-			if (largest_area > 250.0) {
-				flag.data = true;
-			}
+			//~ if (largest_area > 250.0) {
+				//~ flag.data = true;
+			//~ }
 		}
 		
 		flag_pub_.publish(flag);

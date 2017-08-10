@@ -1,21 +1,27 @@
 <launch>
 	<param name="use_sim_time" value="true" />
 	
-	<arg name="rtabviz" value="false" />
+	<!-- Launch all tf -->
+	<include file="$(find mcts_hardware_trials)/launch/transforms.launch" />
+	<node name="dji_odom_transform" pkg="mcts_hardware_trials" 
+		type="dji_odom_transform" output="screen" />
 	
-	<include file="$(find mcts-hardware-trials)/launch/transforms.launch" />
-	
-	<node name="quad_odom_transform" pkg="passive_mapping" type="quad_odom_transform" output="screen" />
-		
-	<arg name="test_num" value="5" />
-	<arg name="bag_path" value="/media/nvidia/SSD/passive-mapping/test_$(arg test_num).bag" />
+	<!-- Bag arguments and launch -->
+	<arg name="test_num" value="4" />
+	<arg name="bag_path" value="/media/nvidia/SSD/passive-mapping/test_$(arg test_num)_modified.bag" />
 	<arg name="bag_args" value="--clock" />
-	
 	<node pkg="rosbag" type="play" name="player" output="screen" 
 		args="$(arg bag_args) $(arg bag_path)"/>
 	
-	<arg name="rtabmap" value="true" />
+	<!-- Launch options -->
+	<arg name="rtabmap" value="false" />
 	<arg name="laser_scan" value="false" />
+	<arg name="rtabviz" value="false" />
+	<arg name="rviz" value="false"/>
+	<arg name="controller" value="true"/>
+	
+	<node if="$(arg controller)" name="controller" 
+		pkg="mcts_hardware_trials" type="controller" output="screen" />
 	
 	<group if="$(arg rtabmap)" ns="rtabmap">
 		<node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="--delete_db_on_start">
@@ -96,7 +102,7 @@
 		
 	</group>
 	
-	<node unless="$(arg rtabviz)" pkg="rviz" type="rviz" name="rviz" />
+	<node if="$(arg rviz)" pkg="rviz" type="rviz" name="rviz" />
 	
 	
 </launch>
