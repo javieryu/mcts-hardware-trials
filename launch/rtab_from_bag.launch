@@ -14,10 +14,10 @@
 		args="$(arg bag_args) $(arg bag_path)"/>
 	
 	<!-- Launch options -->
-	<arg name="rtabmap" value="false" />
+	<arg name="rtabmap" value="true" />
 	<arg name="laser_scan" value="false" />
 	<arg name="rtabviz" value="false" />
-	<arg name="rviz" value="false"/>
+	<arg name="rviz" value="true"/>
 	<arg name="controller" value="true"/>
 	
 	<node if="$(arg controller)" name="controller" 
