@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   tf2_ros
   cv_bridge
+  custom_messages
 )
 
 find_package(OpenCV 2 REQUIRED)
@@ -136,8 +137,8 @@ target_link_libraries(dji_odom_transform ${catkin_LIBRARIES})
 add_executable(goal_spotter src/goal_spotter.cpp)
 target_link_libraries(goal_spotter ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
-add_executable(controller src/controller.cpp)
-target_link_libraries(controller ${catkin_LIBRARIES} ${OpenCV_LIBS})
+add_executable(vel_controller src/vel_controller.cpp)
+target_link_libraries(vel_controller ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries

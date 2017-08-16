@@ -18,10 +18,10 @@
 	<arg name="laser_scan" value="false" />
 	<arg name="rtabviz" value="false" />
 	<arg name="rviz" value="false"/>
-	<arg name="controller" value="true"/>
+	<arg name="vel_controller" value="true"/>
 	
-	<node if="$(arg controller)" name="controller" 
-		pkg="mcts_hardware_trials" type="controller" output="screen" />
+	<node if="$(arg vel_controller)" name="vel_controller" 
+		pkg="mcts_hardware_trials" type="vel_controller" output="screen" />
 	
 	<group if="$(arg rtabmap)" ns="rtabmap">
 		<node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="--delete_db_on_start">

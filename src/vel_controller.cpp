@@ -8,7 +8,7 @@
 #include <std_msgs/Bool.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <custom_messages/DJI_Bridge_Travel_Speed_MSG.h>
 
 
 using namespace std;
@@ -19,6 +19,8 @@ public:
 	ControllerNode() {
 		ros::NodeHandle nh;
 		depth_image_sub_ = nh.subscribe("zed/depth/depth_registered", 1000, &ControllerNode::depth_imageCB,this);
+		speed_pub_ = nh.advertise<custom_messages::DJI_Bridge_Travel_Speed_MSG>("proportional_vel",1000);
+		
 		emergency_stop_ = false;
 		nominal_vel_ = 5.0;
 		depth_based_vel_ = nominal_vel_;
@@ -119,16 +121,25 @@ public:
 		
 		}
 		
+		custom_messages::DJI_Bridge_Travel_Speed_MSG vel;
+		vel.stop = emergency_stop_;
+		vel.travel_speed = depth_based_vel_;
+		
+		
+		speed_pub_.publish(vel);
+		
 		//~ ROS_INFO("Prop Vel: %f, Emergency Stop: %d", depth_based_vel_, emergency_stop_);
 		
-		cv::imshow("prop_im", bin_prop);
-		cv::imshow("em_im", bin_em);
-		cv::waitKey(1);
+		//~ cv::imshow("prop_im", bin_prop);
+		//~ cv::imshow("em_im", bin_em);
+		//~ cv::waitKey(1);
 
 	}
 	
 private:
 	ros::Subscriber depth_image_sub_;
+	ros::Publisher speed_pub_;
+	
 	bool emergency_stop_;
 	double nominal_vel_;
 	double depth_based_vel_;
@@ -136,7 +147,7 @@ private:
 };
 
 int main(int argc, char** argv) {
-	ros::init(argc, argv, "controller_node");
+	ros::init(argc, argv, "vel_controller_node");
 	
 	ControllerNode c;
 	
