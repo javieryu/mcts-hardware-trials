@@ -117,7 +117,12 @@ public:
 					}		
 			}
 			
-			depth_based_vel_ = ((lowest_avg-lowerb)/(upperb-lowerb))*nominal_vel_;
+			if(lowest_avg > lowerb){
+				depth_based_vel_ = ((lowest_avg-lowerb)/(upperb-lowerb))*nominal_vel_;
+			}
+			else {
+				depth_based_vel_ = 0;
+			}
 		
 		}
 		

@@ -17,13 +17,9 @@
 	<arg name="rtabmap" value="true" />
 	<arg name="laser_scan" value="false" />
 	<arg name="rtabviz" value="false" />
-<<<<<<< HEAD
 	<arg name="rviz" value="false"/>
 	<arg name="vel_controller" value="true"/>
-=======
-	<arg name="rviz" value="true"/>
-	<arg name="controller" value="true"/>
->>>>>>> 8b2c750d27c759f794bd93f947cfff609a44f001
+
 	
 	<node if="$(arg vel_controller)" name="vel_controller" 
 		pkg="mcts_hardware_trials" type="vel_controller" output="screen" />
