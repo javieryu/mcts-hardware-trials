@@ -1,13 +1,13 @@
 <launch>
 	
-	<include file="$(find mcts-hardware-trials)/launch/zed.launch" />
+	<include file="$(find mcts_hardware_trials)/launch/zed.launch" />
 	
-	<include file="$(find mcts-hardware-trials)/launch/rtabmap_mapping.launch" /> 
+	<include file="$(find mcts_hardware_trials)/launch/rtabmap.launch" /> 
 	
 	<include file="$(find dji_sdk)/launch/sdk_manifold.launch" />
 	
-	<node name="quad_odom_transform" pkg="passive_mapping" type="quad_odom_transform" output="screen" />
+	<node name="dji_odom_transform" pkg="mcts_hardware_trials" type="dji_odom_transform" output="screen" />
 	
-	<include file="$(find mcts-hardware-trials)/launch/transforms.launch" />
+	<include file="$(find mcts_hardware_trials)/launch/transforms.launch" />
 	
 </launch>

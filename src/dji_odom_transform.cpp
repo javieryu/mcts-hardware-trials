@@ -34,6 +34,7 @@ int main(int argc, char** argv) {
 	ros::NodeHandle nh;
 	
 	ros::Subscriber odomSub = nh.subscribe("dji_sdk/odometry", 1000, &odomCB);
+	//~ ros::Subscriber odomSub = nh.subscribe("dji_bridge_odom", 1000, &odomCB);
 	
 	ros::spin();
 	

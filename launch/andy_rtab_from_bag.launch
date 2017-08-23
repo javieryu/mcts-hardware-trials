@@ -57,12 +57,13 @@
 			<param name="Grid/DepthMax" type="string" value="15.0" />
 			<param name="Grid/CellSize" type="string" value="0.2" />
 
+			<param name="cloud_floor_culling_height" type="string" value="0.5" />
+			 
 			<param name="GridGlobal/Eroded" type="string" value="true" />
 			<param name="Grid/GroundIsObstacle" type="string" value="true" />
 			<param name="Grid/NormalSegmentation" type="string" value="true" />
 			<param name="Grid/MaxGroundAngle" type="string" value="45" />
 			
-
 			<param name="Grid/NoiseFilteringRadius" type="string" value="0.175"/>
 			<param name="Grid/NoiseFilteringMinNeighbors" type="string" value="4"/>
 			<param name="GridGlobal/FullUpdate" type="string" value="true" />
@@ -88,7 +89,7 @@
 			<param name="subscribe_stereo"     type="bool"   value="false"/>
 			<param name="subscribe_scan"       type="bool"   value="false"/>
 			<param name="subscribe_scan_cloud" type="bool"   value="false"/>
-			<param name="subscribe_odom_info"  type="bool"   value="false"/>
+			<param name="subscribe_odom_info"  type="bool"   value="true"/>
 			<param name="frame_id"             type="string" value="zed_current_frame"/>
 			<param name="wait_for_transform_duration" type="double"   value="0.2"/>
 			<param name="approx_sync"          type="bool"   value="true"/>
@@ -98,7 +99,8 @@
 			<remap from="rgb/camera_info" to="/zed/depth/camera_info"/>
 
 
-			<remap from="odom"  to="/dji_sdk/odometry"/>
+			<!-- remap from="odom"  to="/dji_sdk/odometry" -->
+			
 		</node>
 		
 	</group>
