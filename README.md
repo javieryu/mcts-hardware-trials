@@ -98,7 +98,7 @@ repo for hardware trials
 * This package was tested on TX2s flashed using JetPack 3.1
 * See the issues.txt file for possible bugs and solutions that pertain to this package, and its necessary dependencies.
 * For the U-Blox GPS:
-	-Install: 
+	- Install: 
 		- In ~/catkin_ws/src
 		- *git clone https://github.com/KumarRobotics/ublox.git*
 		- *catkin_make*
