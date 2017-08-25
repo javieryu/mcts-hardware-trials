@@ -55,15 +55,15 @@ repo for hardware trials
 	- This isn't actually called anywhere, but it is a working launch file for running the DJI SDK. 
 
 # Launch case instructions:
-	-Before any of these instructions:
-		- *source devel/setup.bash*
-	- To launch all of the components neccessary for RTABMap to work in real time with DJI odometry and a ZED Camera.
-		- *roslaunch mcts\_hardware\_trials mapping.launch*
-	- To run everything that **mapping.launch** runs and also record a bag file.
-		- *roslaunch mcts\_hardware\_trials record_bag.launch*
-	- To playback a bag and run a variety of different nodes.
-		- Pick what you want to run depending on the bag contents by editing the arg values in the 'launch options' section of **rtab_from_bag.launch**
-		- *roslaunch mcts\_hardware\_trials rtab_from_bag.launch*
+* Before any of these instructions:
+	- *source devel/setup.bash*
+* To launch all of the components neccessary for RTABMap to work in real time with DJI odometry and a ZED Camera.
+	- *roslaunch mcts\_hardware\_trials mapping.launch*
+* To run everything that **mapping.launch** runs and also record a bag file.
+	- *roslaunch mcts\_hardware\_trials record_bag.launch*
+* To playback a bag and run a variety of different nodes.
+	- Pick what you want to run depending on the bag contents by editing the arg values in the 'launch options' section of **rtab_from_bag.launch**
+	- *roslaunch mcts\_hardware\_trials rtab_from_bag.launch*
 
 
 # Node Explainations
