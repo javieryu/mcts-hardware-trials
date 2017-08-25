@@ -60,7 +60,7 @@ repo for hardware trials
 * To launch all of the components neccessary for RTABMap to work in real time with DJI odometry and a ZED Camera.
 	- *roslaunch mcts\_hardware\_trials mapping.launch*
 * To run everything that **mapping.launch** runs and also record a bag file.
-	- *roslaunch mcts\_hardware\_trials record_bag.launch*
+	- *roslaunch 	mcts\_hardware\_trials record_bag.launch*
 * To playback a bag and run a variety of different nodes.
 	- Pick what you want to run depending on the bag contents by editing the arg values in the 'launch options' section of **rtab_from_bag.launch**
 	- *roslaunch mcts\_hardware\_trials rtab_from_bag.launch*
@@ -98,7 +98,7 @@ repo for hardware trials
 * This package was tested on TX2s flashed using JetPack 3.1
 * See the issues.txt file for possible bugs and solutions that pertain to this package, and its necessary dependencies.
 * For the U-Blox GPS:
--Install: 
+	-Install: 
 		- In ~/catkin_ws/src
 		- *git clone https://github.com/KumarRobotics/ublox.git*
 		- *catkin_make*
