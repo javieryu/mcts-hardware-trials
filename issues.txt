@@ -1,0 +1,79 @@
+Issue: 
+Unable to install ROS dependencies, this error -> http://answers.ros.org/question/243920/how-to-install-ros-kinetic-ubuntu-1604/
+Solution: 
+On the fresh flash of Ubuntu 16.04 from Jetpack R27.1, the apt does not source the full
+Ubuntu Xenial Universe library. Fix this by uncommenting the necessary lines in /etc/apt/sources.list
+
+Issue:
+When installing ROS, "sudo rosdep init" throws an error.
+Solution:
+Run "sudo c_rehash /etc/ssl/certs", and then re-run "sudo rosdep init"
+
+Issue: 
+Missing packages on the TX2, CUDA 8.0 and Opencv4Tegra 
+Solution:
+Use this method to find the appropriate repos (can't use apt-get for whatever reason only JetPack works), and install them. http://warppipe.net/blog/installing-cuda-packages-on-jetson-boards/. 
+**OR**
+Use JetPack and a router to try and reflash the boards.
+
+Issue:
+DJI ROS node not connecting to DJI Matrice 100 flight controller.
+Solution:
+Was using DJI-SDK and DJI-SDK-ROS versions 3.3, which does not support the DJI Matrice 100. Reinstalled version 3.2 and proceeded with no issues.
+
+Issue:
+RTABMap not running due to opencv conflicts.
+Solution:
+Run "ldd librtabmap_ros.so | grep opencv_core" the version should be 2.4, and there should not be links to any other versions of opencv.
+If there is then follow the advice in this forum post: http://official-rtab-map-forum.67519.x6.nabble.com/ZED-Jetson-TX1-and-Rtabmap-td2841.html#a3409
+Edit the CMakeLists.txt files for the rtabmap standalone library and the rtabmap_ros package to force them to build against OpenCV 2.4 (OpenCV4Tegra).
+
+Issue:
+Strong interference with the GPS signal on the Matrice.
+Solution:
+Make sure that the cable connecting the GPS module to the matrice controller does not run near any strong EM sources (ex: power cables)
+
+Issue:
+Connecting to new wifi sources in the field.
+Solution:
+Connect to the TX2 via ethernet, ssh, and then run "sudo nmcli dev wifi connect YOUR_DESIRED_SSID"
+
+Issue:
+When running rtabmap with the zed, the map is projected "upwards" rather than "forwards"
+Solution:
+Follow the instructions on this forum post: http://official-rtab-map-forum.67519.x6.nabble.com/zed-camera-frame-won-t-rotate-to-map-td2712.html#a2715
+Change the incorrect line in the zed_wrapper and run catkin_make, and edit the 2nd static transform in zed_tf.launch.
+
+Issue:
+During compilation "/usr/bin/ld: cannot find -lopencv_dep_cudart" error is thrown.
+Solution:
+From my experience this only occurs when compiling with the TX2 set in one of the high performance modes using nvpmodel.
+To solve just add "set(CUDA_USE_STATIC_CUDA_RUNTIME OFF)" to the CMakeLists.txt file.
+
+Issue:
+During compilation of rtabmap_ros, an error "concerning the line std::shared_ptr<cache> _cache;" in the image_geometry/pinhole_camera_model.cpp file.
+Solution:
+Because image_geometry is part of the ros-kinetic-desktop-full installation, for some reason when compiling image_geometry from source the cpp file finds the ros-install's header file
+instead of the source's header file. To fix this rename the header file in include/image_geometry to something else like "pinhole_camera_model_1.h" then change the include line in
+the cpp file. This solution was from a forum post that I can't find, but its out there somewhere.
+
+Issue:
+During compilation of rtabmap_ros, the compiler crashes for seamingly no reason.
+Solution:
+This is likely due to the system running out of ram, run "catkin_make -j2" to compile with only two cores.
+
+Issue:
+During RTABMap runtime rtabmap crashes with an OpenCV error "Assertion Failed ...... roi.x <= ..."
+Solution:
+Check that the DJI homepoint is set, and verify that /dji_sdk/odometry is publishing sensible values. I had this issue when the home point was set to china, and the x and y pos were in the 10^6 values.
+
+
+Installing SATA drive:
+http://www.jetsonhacks.com/2017/03/31/install-samsung-ssd-nvidia-jetson-tx2/
+
+
+
+
+
+
+
