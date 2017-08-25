@@ -7,14 +7,14 @@
 		type="dji_odom_transform" output="screen" />
 	
 	<!-- Bag arguments and launch -->
-	<arg name="test_num" value="9" />
-	<arg name="bag_path" value="/media/nvidia/SSD/passive-mapping/test$(arg test_num)_modified.bag" />
-	<arg name="bag_args" value="--clock" />
+	<arg name="test_num" value="12" />
+	<arg name="bag_path" value="/media/nvidia/SSD/passive-mapping/test_12.bag" />
+	<arg name="bag_args" value="--clock --quiet" />
 	<node pkg="rosbag" type="play" name="player" output="screen" 
 		args="$(arg bag_args) $(arg bag_path)"/>
 	
 	<!-- Launch options -->
-	<arg name="rtabmap" value="true" />
+	<arg name="rtabmap" value="false" />
 	<arg name="laser_scan" value="false" />
 	<arg name="rtabviz" value="false" />
 	<arg name="rviz" value="true"/>
@@ -55,7 +55,8 @@
 			<param name="Grid/3D" type="string" value="false" />
 			
 			<param name="Grid/DepthMax" type="string" value="15.0" />
-			<param name="Grid/CellSize" type="string" value="0.2" />
+			<param name="Grid/CellSize" type="string" value="0.25" />
+			<param name="GridGlobal/MinSize" type="string" value="600"/>
 
 			<param name="GridGlobal/Eroded" type="string" value="true" />
 			<param name="Grid/GroundIsObstacle" type="string" value="true" />
@@ -63,8 +64,8 @@
 			<param name="Grid/MaxGroundAngle" type="string" value="45" />
 			
 
-			<param name="Grid/NoiseFilteringRadius" type="string" value="0.175"/>
-			<param name="Grid/NoiseFilteringMinNeighbors" type="string" value="4"/>
+			<!--param name="Grid/NoiseFilteringRadius" type="string" value="0.175"/-->
+			<!--param name="Grid/NoiseFilteringMinNeighbors" type="string" value="4"/-->
 			<param name="GridGlobal/FullUpdate" type="string" value="true" />
 			
 			<param name="Grid/FootprintHeight" type="string" value="1.0" />

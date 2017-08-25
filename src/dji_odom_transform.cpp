@@ -14,12 +14,12 @@ void odomCB(const nav_msgs::Odometry::ConstPtr& msg){
 	transformStamped.child_frame_id = "quad";
 	
 	transformStamped.transform.translation.x = msg->pose.pose.position.x;
-    transformStamped.transform.translation.y = -1*msg->pose.pose.position.y;
+    transformStamped.transform.translation.y = 1*msg->pose.pose.position.y;
     transformStamped.transform.translation.z = msg->pose.pose.position.z;
     
 	transformStamped.transform.rotation.x = msg->pose.pose.orientation.x;
 	transformStamped.transform.rotation.y = msg->pose.pose.orientation.y;
-	transformStamped.transform.rotation.z = -1*msg->pose.pose.orientation.z;
+	transformStamped.transform.rotation.z = 1*msg->pose.pose.orientation.z;
 	transformStamped.transform.rotation.w = msg->pose.pose.orientation.w;
 	
 	//~ Negations are to match the odometry with tf's natural xyz orientations
@@ -33,8 +33,8 @@ int main(int argc, char** argv) {
 	
 	ros::NodeHandle nh;
 	
-	ros::Subscriber odomSub = nh.subscribe("dji_sdk/odometry", 1000, &odomCB);
-	//~ ros::Subscriber odomSub = nh.subscribe("dji_bridge_odom", 1000, &odomCB);
+	//ros::Subscriber odomSub = nh.subscribe("dji_sdk/odometry", 1000, &odomCB);
+	ros::Subscriber odomSub = nh.subscribe("dji_bridge_odom", 1000, &odomCB);
 	
 	ros::spin();
 	
