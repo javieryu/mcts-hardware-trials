@@ -1,3 +1,18 @@
+Issue:
+  Need to duplicate the entire TX2 to another TX2 (cloning)
+Solution:
+  1 - Download the Jetpack with the version of L4T (Linux for Tegra) of the original (to be cloned) TX2. You can get the version by running: 'head -n 1 /etc/nv_tegra_release'. Which will give an output like: '$ # R27 (release), REVISION: 1.0, GCID: 8566447, BOARD: t186ref, EABI: aarch64, DATE: Thu Mar 2 05:14:54 UTC 2017' which can be intrerpreted as L4T 27.1 which corresponds to Jetpack 3.0 per the nvidia Jetpack archives.
+  
+  2 - Install the Jetpack on the new (clone) Jetson, including all libraries using the normal Jetpack flashing procedure: '$ ./JetPack-L4T-3.0-linux-x64.run' and then following instructions.
+  
+  3 - If you are cloning more than 1 Jetson then create a copy of the Jetpack contents in a new folder as you will require use of the original Jetpack to flash raw TX2s to this point. Following this step you will modify the Jetpack making it unable to flash a raw (unflashed with the current Jetpack) TX2. If you are doing only 1 clone then do nothing.
+  
+  4 - This is following the instructions from: https://elinux.org/Jetson/TX2_Cloning. Put the original Jetson to be cloned in recovery mode and link to it via micro-usb and ensure it is found by the host computer (if found '$ lsusb' will show something with Nvidia). Then cd into 64_tx2/Linux_for_Tegra_tx2. Next run '$ sudo ./flash.sh -r -k APP -G backup.img jetson-tx2 mmcblk0p1'. This will create a clone of the entire eMMC (~TX2 hard drive) and save it as backup.img), which takes a while (~1-2 hours).
+  
+  5 - Copy the backup img into the Jetpack as the system.img that is the default to flash to the TX2 by running: '$ sudo cp backup.img.raw bootloader/system.img'
+  
+  6 - Remove the original (clone template) TX2 and place the new (clone) TX2 in recovery mode and attach the USB to the host computer, ensure it is found as in 4. Then flash the system img onto the clone using: '$ sudo ./flash.sh -r -k APP jetson-tx2 mmcblk0p1'. This takes a while (~1-2 hours). When it is done it should be identical to the orignial TX2 except some small things, like WIFI passwords, but ROS packages should work immediately, even without running catkin_make.
+
 Issue: 
 Unable to install ROS dependencies, this error -> http://answers.ros.org/question/243920/how-to-install-ros-kinetic-ubuntu-1604/
 Solution: 
